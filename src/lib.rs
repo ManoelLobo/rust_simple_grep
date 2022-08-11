@@ -21,7 +21,40 @@ impl Config {
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let file_content = fs::read_to_string(config.file_path)?;
 
-    println!("File content:\n{file_content}");
+    for line in search(&config.query, &file_content) {
+        println!("{line}")
+    }
 
     Ok(())
+}
+
+pub fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
+    let mut result = vec![];
+
+    for line in content.lines() {
+        if line.contains(query) {
+            result.push(line)
+        }
+    }
+
+    result
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn any_result() {
+        let query = "neat";
+        let content = "\
+As I mentioned
+No one is beneath redemption.
+Cool.";
+
+        assert_eq!(
+            vec!["No one is beneath redemption."],
+            search(query, content)
+        )
+    }
 }
