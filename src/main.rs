@@ -3,7 +3,7 @@ use std::{env, fs, process};
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let config = Config::new(&args).unwrap_or_else(|err| {
+    let config = Config::build(&args).unwrap_or_else(|err| {
         println!("{err}");
         process::exit(1)
     });
@@ -22,7 +22,7 @@ struct Config {
 }
 
 impl Config {
-    fn new(args: &[String]) -> Result<Config, &'static str> {
+    fn build(args: &[String]) -> Result<Config, &'static str> {
         if args.len() < 3 {
             return Err("Missing arguments");
         }
