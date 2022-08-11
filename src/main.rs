@@ -11,6 +11,10 @@ fn main() {
     println!("Search query: {}", config.query);
     println!("File (path): {}", config.file_path);
 
+    run(config)
+}
+
+fn run(config: Config) {
     let file_content = fs::read_to_string(config.file_path).expect("Could not read file");
 
     println!("File content:\n{file_content}");
